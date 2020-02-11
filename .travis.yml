@@ -9,10 +9,11 @@ script:
   - make
 after_success:
   - make check || exit 1
-  - export CUKE_CLOBBER_PATH=$TRAVIS_BUILD_DIR/tests/tools/ls-clobber
+  - export PATH="$PATH:$TRAVIS_BUILD_DIR/tests/tools"
   - export CUKE_UNIXCAT_PATH=$TRAVIS_BUILD_DIR/src/unixcat
   - export CUKE_LIVESTATUS_PATH=$TRAVIS_BUILD_DIR/src/.libs/livestatus.so
   - cucumber ./tests -t ~@skip -t ~@unreliable --strict || exit 1
+  - LIVESTATUS_TCP=1 cucumber ./tests -t ~@skip -t ~@unreliable --strict || exit 1
 before_install:
   - sudo apt-get update
   - sudo apt-get install apt-transport-https
